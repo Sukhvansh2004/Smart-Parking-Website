@@ -8,6 +8,7 @@ import AdminPanel from "./components/AdminPanel";
 
 const App = () => {
   const [googleToken, setGoogleToken] = useState(null);
+  const [adminToken, setAdminToken] = useState(null);
 
   return (
     <GoogleOAuthProvider clientId="705225432757-hdkc806vmj8por78b3cs1v57i3t86vrn.apps.googleusercontent.com">
@@ -25,8 +26,8 @@ const App = () => {
             <Routes>
               <Route path="/" element={<ParkingLot googleToken={googleToken} />} />
               {/* Admin routes */}
-              <Route path="/admin" element={<AdminLogin setToken={setGoogleToken} />} />
-              <Route path="/admin/panel" element={<AdminPanel token={googleToken} />} />
+              <Route path="/admin" element={<AdminLogin setToken={setAdminToken} />} />
+              <Route path="/admin/panel" element={<AdminPanel token={adminToken} />} />
             </Routes>
           )}
         </div>
