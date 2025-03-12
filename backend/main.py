@@ -5,8 +5,11 @@ from typing import Optional
 
 from database import SessionLocal, ParkingSlot, Admin, init_db
 from auth import create_access_token, verify_password, decode_access_token
+from booking import router as booking_router
 
 app = FastAPI()
+app.include_router(booking_router)
+
 
 # Enable CORS for the frontend
 app.add_middleware(

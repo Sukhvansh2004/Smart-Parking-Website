@@ -44,9 +44,9 @@ perl
 
 
 
-## Backend Setup
+# Backend Setup
 
-1. Setting Up a Conda Environment
+## 1. Setting Up a Conda Environment
 
 Open your terminal and navigate to the `backend` directory. Create a new conda environment (e.g., named `smart_parking_env`):
 
@@ -55,7 +55,7 @@ conda create -n smart_parking_env python=3.9
 conda activate smart_parking_env
 ```
 
-2. Installing Dependencies
+## 2. Installing Dependencies
 Inside the backend folder, install the required Python packages. Make sure you have a requirements.txt file that includes:
 
 ```txt
@@ -73,7 +73,7 @@ Then install them with:
 pip install -r requirements.txt
 ```
 
-3. Configuring PostgreSQL
+## 3. Configuring PostgreSQL
 Installing PostgreSQL (WSL Ubuntu)
 Update packages:
 ```bash
@@ -112,7 +112,7 @@ Update the DATABASE_URL in backend/database.py accordingly:
 DATABASE_URL = "postgresql://your_username:your_password@localhost/smart_parking"
 ```
 
-4. Running the Backend
+## 4. Running the Backend
 After configuring the database and installing dependencies, run the FastAPI backend:
 
 ```bash
@@ -122,8 +122,9 @@ uvicorn main:app --reload --host 0.0.0.0 --port 8000
 
 The API should now be accessible at http://localhost:8000.
 
-## Frontend Setup
-1. Installing Node and Dependencies
+# Frontend Setup
+
+## 1. Installing Node and Dependencies
 Navigate to the frontend directory. If you haven't created the React app yet, run:
 
 ```bash
@@ -161,7 +162,7 @@ Make sure your package.json is similar to:
 
 Also, ensure you have a valid index.html in frontend/public/ as described in the Project Structure.
 
-2. Running the Frontend
+## 2. Running the Frontend
 In the frontend folder, run:
 
 ```bash
