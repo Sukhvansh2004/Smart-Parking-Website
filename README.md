@@ -105,7 +105,6 @@ CREATE DATABASE smart_parking;
 CREATE USER your_username WITH ENCRYPTED PASSWORD 'your_password';
 GRANT ALL PRIVILEGES ON DATABASE smart_parking TO your_username;
 \q
-Update the DATABASE_URL in backend/database.py accordingly:
 ```
 
 ## 4. Running the Backend
