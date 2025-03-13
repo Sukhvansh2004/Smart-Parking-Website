@@ -207,7 +207,7 @@ Example to create an admin:
 python create_admin.py admin mypassword
 ```
 
-Managing Slots: After logging in, use the admin panel to add new parking slots or delete existing ones.
+Managing Slots: After logging in, use the admin panel to add new parking slots, delete existing ones or release the booked ones.
 
 Troubleshooting
 Network Issues: Ensure that your backend (FastAPI) is running and accessible from your React app. Adjust the API URL in your Axios requests if needed (try http://127.0.0.1:8000 or use the proxy option in package.json).
