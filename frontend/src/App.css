@@ -1,26 +1,53 @@
-.parking-lot {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-    gap: 10px;
-  }
-  
-  .slot {
-    padding: 10px;
-    border: 1px solid #ccc;
-    text-align: center;
-  }
-  
-  .available {
-    background-color: #c8e6c9;
-  }
-  
-  .occupied {
-    background-color: #ffcdd2;
-  }
-  
-  button {
-    margin-top: 5px;
-    padding: 5px 10px;
-    cursor: pointer;
-  }
-  
+body {
+  margin: 0;
+  font-family: 'Roboto', sans-serif;
+  background: linear-gradient(135deg, #f6d365 0%, #fda085 100%);
+  color: #333;
+}
+
+nav {
+  background: rgba(255, 255, 255, 0.9);
+  padding: 15px 30px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+nav a {
+  margin: 0 15px;
+  color: #333;
+  text-decoration: none;
+  font-weight: 500;
+}
+nav a:hover {
+  color: #fda085;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 50px auto;
+  padding: 20px;
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+h2 {
+  color: #1810bc;
+}
+
+button {
+  background: #fda085;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 1rem;
+}
+button:hover {
+  background: #f6d365;
+}
+
+/* Additional styling for layout consistency */
+.app-header {
+  text-align: center;
+  padding: 50px 0;
+}

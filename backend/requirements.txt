@@ -5,3 +5,5 @@ psycopg2-binary
 python-jose[cryptography]
 bcrypt
 passlib
+google-auth
+google-auth-oauthlib

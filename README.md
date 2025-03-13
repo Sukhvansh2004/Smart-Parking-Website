@@ -44,9 +44,9 @@ perl
 
 
 
-## Backend Setup
+# Backend Setup
 
-1. Setting Up a Conda Environment
+## 1. Setting Up a Conda Environment
 
 Open your terminal and navigate to the `backend` directory. Create a new conda environment (e.g., named `smart_parking_env`):
 
@@ -55,7 +55,7 @@ conda create -n smart_parking_env python=3.9
 conda activate smart_parking_env
 ```
 
-2. Installing Dependencies
+## 2. Installing Dependencies
 Inside the backend folder, install the required Python packages. Make sure you have a requirements.txt file that includes:
 
 ```txt
@@ -73,7 +73,7 @@ Then install them with:
 pip install -r requirements.txt
 ```
 
-3. Configuring PostgreSQL
+## 3. Configuring PostgreSQL
 Installing PostgreSQL (WSL Ubuntu)
 Update packages:
 ```bash
@@ -108,12 +108,24 @@ GRANT ALL PRIVILEGES ON DATABASE smart_parking TO your_username;
 Update the DATABASE_URL in backend/database.py accordingly:
 ```
 
-```python
-DATABASE_URL = "postgresql://your_username:your_password@localhost/smart_parking"
-```
+## 4. Running the Backend
+Now export all the secrets and tokens into the terminal where you will be running the backend. It is advisable to make a bash script exporting all the necessary variables and then source it.
 
-4. Running the Backend
-After configuring the database and installing dependencies, run the FastAPI backend:
+```sh
+#!/bin/bash
+# set_env.sh
+# This script sets environment variables for the Smart Parking Management System.
+# Run it using: source set_env.sh
+
+export DATABASE_URL="postgresql://your_username:your_password@localhost/smart_parking"
+export SECRET_KEY="YOUR_SECRET_KEY_FOR_ADMIN_ACCESS"
+export GOOGLE_CLIENT_ID="GOOGLE_AUTH_CLIENT_TOKEN"
+export GOOGLE_CLIENT_SECRET="GOOGLE_AUTH_CLIENT_TOKEN_SECRET"
+
+
+echo "Environment variables have been set."
+```
+After configuring the variables and installing dependencies, run the FastAPI backend:
 
 ```bash
 uvicorn main:app --reload --host 0.0.0.0 --port 8000
@@ -122,8 +134,9 @@ uvicorn main:app --reload --host 0.0.0.0 --port 8000
 
 The API should now be accessible at http://localhost:8000.
 
-## Frontend Setup
-1. Installing Node and Dependencies
+# Frontend Setup
+
+## 1. Installing Node and Dependencies
 Navigate to the frontend directory. If you haven't created the React app yet, run:
 
 ```bash
@@ -161,7 +174,14 @@ Make sure your package.json is similar to:
 
 Also, ensure you have a valid index.html in frontend/public/ as described in the Project Structure.
 
-2. Running the Frontend
+## 2. Running the Frontend
+
+Before running the frontend, create a .env file in the frontend folder containing the google auth token required for signing in.
+
+```env
+REACT_APP_GOOGLE_CLIENT_ID=YOUR_GOOGLE_AUTH_CLIENT_TOKEN
+```
+
 In the frontend folder, run:
 
 ```bash
