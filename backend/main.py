@@ -4,12 +4,9 @@ from sqlalchemy.orm import Session
 from typing import Optional
 
 from database import SessionLocal, ParkingSlot, Admin, init_db
-from auth import create_access_token, verify_password, decode_access_token
-from booking import router as booking_router
+from auth import create_access_token, verify_password, decode_access_token, verify_google_token
 
 app = FastAPI()
-app.include_router(booking_router)
-
 
 # Enable CORS for the frontend
 app.add_middleware(
@@ -59,16 +56,17 @@ def get_current_admin(token: str = Depends(get_token), db: Session = Depends(get
 @app.get("/parking_status")
 def get_parking_status(db: Session = Depends(get_db)):
     slots = db.query(ParkingSlot).all()
-    return [{"slot_id": slot.slot_id, "status": "Available" if slot.status else "Occupied"} for slot in slots]
+    return [{"slot_id": slot.slot_id, "status": "Available" if slot.status else "Occupied", "user": slot.user} for slot in slots]
 
 @app.post("/book/{slot_id}")
-def book_parking_slot(slot_id: str, db: Session = Depends(get_db)):
+def book_parking_slot(slot_id: str, token: str, db: Session = Depends(get_db)):
     slot = db.query(ParkingSlot).filter(ParkingSlot.slot_id == slot_id).first()
     if not slot:
         raise HTTPException(status_code=404, detail="Slot does not exist")
     if not slot.status:
         raise HTTPException(status_code=400, detail="Slot already booked")
     slot.status = False
+    slot.user = verify_google_token(token)["email"]
     db.commit()
     return {"message": f"Slot {slot_id} successfully booked"}
 
@@ -80,6 +78,7 @@ def release_parking_slot(slot_id: str, db: Session = Depends(get_db)):
     if slot.status:
         raise HTTPException(status_code=400, detail="Slot already available")
     slot.status = True
+    slot.user = None
     db.commit()
     return {"message": f"Slot {slot_id} successfully released"}
 
@@ -112,3 +111,12 @@ def delete_slot(slot_id: str, db: Session = Depends(get_db), admin: Admin = Depe
     db.delete(slot)
     db.commit()
     return {"message": f"Slot {slot_id} deleted successfully"}
+
+@app.get("/user")
+def get_user(token: str):
+    user = verify_google_token(token)['email']
+    return {"user": user}
+
+@app.get("/admin/verify")
+def verify_admin(admin: Admin = Depends(get_current_admin)):
+    return {"message": "Admin verified", "username": admin.username}
