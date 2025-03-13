@@ -2,3 +2,4 @@ frontend/node_modules
 **pycache**
 frontend/package-lock.json
 set_env.sh
+frontend/.env

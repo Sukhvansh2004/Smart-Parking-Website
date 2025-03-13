@@ -9,9 +9,12 @@ import AdminPanel from "./components/AdminPanel";
 const App = () => {
   const [googleToken, setGoogleToken] = useState(null);
   const [adminToken, setAdminToken] = useState(null);
-
+  
+  // Read the Google Client ID from the environment variable
+  const googleClientId = process.env.REACT_APP_GOOGLE_CLIENT_ID;
+  
   return (
-    <GoogleOAuthProvider clientId="705225432757-hdkc806vmj8por78b3cs1v57i3t86vrn.apps.googleusercontent.com">
+    <GoogleOAuthProvider clientId={googleClientId}>
       <Router>
         <div>
           <nav>
