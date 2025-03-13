@@ -43,7 +43,7 @@ const AdminPanel = ({ token }) => {
       fetchSlots();
       const intervalId = setInterval(() => {
         fetchSlots();
-      }, 10000); // Refresh every 10 seconds
+      }, 1000); // Refresh every 10 seconds
 
       return () => clearInterval(intervalId);
     }
