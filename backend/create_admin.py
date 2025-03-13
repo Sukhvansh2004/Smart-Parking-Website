@@ -2,6 +2,7 @@ from sqlalchemy.orm import Session
 from database import SessionLocal, Admin, init_db
 from auth import get_password_hash
 
+
 def create_admin(username: str, password: str):
     db: Session = SessionLocal()
     init_db()  # ensure tables exist
@@ -15,8 +16,10 @@ def create_admin(username: str, password: str):
     db.commit()
     print(f"Admin '{username}' created successfully")
 
+
 if __name__ == "__main__":
     import sys
+
     if len(sys.argv) != 3:
         print("Usage: python create_admin.py <username> <password>")
     else:

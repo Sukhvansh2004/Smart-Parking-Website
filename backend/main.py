@@ -4,7 +4,12 @@ from sqlalchemy.orm import Session
 from typing import Optional
 
 from database import SessionLocal, ParkingSlot, Admin, init_db
-from auth import create_access_token, verify_password, decode_access_token, verify_google_token
+from auth import (
+    create_access_token,
+    verify_password,
+    decode_access_token,
+    verify_google_token,
+)
 
 app = FastAPI()
 
@@ -17,10 +22,12 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+
 # Initialize the database on startup
 @app.on_event("startup")
 def on_startup():
     init_db()
+
 
 # Dependency to get a DB session
 def get_db():
@@ -30,6 +37,7 @@ def get_db():
     finally:
         db.close()
 
+
 # Helper to extract token from Authorization header
 def get_token(authorization: Optional[str] = Header(None)):
     if authorization:
@@ -37,6 +45,7 @@ def get_token(authorization: Optional[str] = Header(None)):
         if len(parts) == 2 and parts[0].lower() == "bearer":
             return parts[1]
     raise HTTPException(status_code=401, detail="Invalid or missing token")
+
 
 # Validate current admin using the token
 def get_current_admin(token: str = Depends(get_token), db: Session = Depends(get_db)):
@@ -49,14 +58,24 @@ def get_current_admin(token: str = Depends(get_token), db: Session = Depends(get
         raise HTTPException(status_code=401, detail="Admin not found")
     return admin
 
+
 # -----------------------
 # Public User Routes
 # -----------------------
 
+
 @app.get("/parking_status")
 def get_parking_status(db: Session = Depends(get_db)):
     slots = db.query(ParkingSlot).all()
-    return [{"slot_id": slot.slot_id, "status": "Available" if slot.status else "Occupied", "user": slot.user} for slot in slots]
+    return [
+        {
+            "slot_id": slot.slot_id,
+            "status": "Available" if slot.status else "Occupied",
+            "user": slot.user,
+        }
+        for slot in slots
+    ]
+
 
 @app.post("/book/{slot_id}")
 def book_parking_slot(slot_id: str, token: str, db: Session = Depends(get_db)):
@@ -70,6 +89,7 @@ def book_parking_slot(slot_id: str, token: str, db: Session = Depends(get_db)):
     db.commit()
     return {"message": f"Slot {slot_id} successfully booked"}
 
+
 @app.post("/release/{slot_id}")
 def release_parking_slot(slot_id: str, db: Session = Depends(get_db)):
     slot = db.query(ParkingSlot).filter(ParkingSlot.slot_id == slot_id).first()
@@ -82,9 +102,11 @@ def release_parking_slot(slot_id: str, db: Session = Depends(get_db)):
     db.commit()
     return {"message": f"Slot {slot_id} successfully released"}
 
+
 # -----------------------
 # Admin Routes
 # -----------------------
+
 
 @app.post("/admin/login")
 def admin_login(username: str, password: str, db: Session = Depends(get_db)):
@@ -94,8 +116,13 @@ def admin_login(username: str, password: str, db: Session = Depends(get_db)):
     token = create_access_token({"sub": admin.username})
     return {"access_token": token}
 
+
 @app.post("/admin/add_slot/{slot_id}")
-def add_slot(slot_id: str, db: Session = Depends(get_db), admin: Admin = Depends(get_current_admin)):
+def add_slot(
+    slot_id: str,
+    db: Session = Depends(get_db),
+    admin: Admin = Depends(get_current_admin),
+):
     if db.query(ParkingSlot).filter(ParkingSlot.slot_id == slot_id).first():
         raise HTTPException(status_code=400, detail="Slot already exists")
     new_slot = ParkingSlot(slot_id=slot_id, status=True)
@@ -103,8 +130,13 @@ def add_slot(slot_id: str, db: Session = Depends(get_db), admin: Admin = Depends
     db.commit()
     return {"message": f"Slot {slot_id} added successfully"}
 
+
 @app.delete("/admin/delete_slot/{slot_id}")
-def delete_slot(slot_id: str, db: Session = Depends(get_db), admin: Admin = Depends(get_current_admin)):
+def delete_slot(
+    slot_id: str,
+    db: Session = Depends(get_db),
+    admin: Admin = Depends(get_current_admin),
+):
     slot = db.query(ParkingSlot).filter(ParkingSlot.slot_id == slot_id).first()
     if not slot:
         raise HTTPException(status_code=404, detail="Slot not found")
@@ -112,10 +144,12 @@ def delete_slot(slot_id: str, db: Session = Depends(get_db), admin: Admin = Depe
     db.commit()
     return {"message": f"Slot {slot_id} deleted successfully"}
 
+
 @app.get("/user")
 def get_user(token: str):
-    user = verify_google_token(token)['email']
+    user = verify_google_token(token)["email"]
     return {"user": user}
+
 
 @app.get("/admin/verify")
 def verify_admin(admin: Admin = Depends(get_current_admin)):
