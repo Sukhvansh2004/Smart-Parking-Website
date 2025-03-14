@@ -38,6 +38,7 @@ A full-stack Smart Parking Management System with a FastAPI backend (with Postgr
 
 ## Project Structure
 
+```perl
 smart-parking/ 
 .
 ├── README.md
@@ -63,7 +64,7 @@ smart-parking/
 │       │   └── Slot.js
 │       └── index.js
 └── set_env.sh
-
+```
 
 # Backend Setup
 
