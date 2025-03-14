@@ -38,10 +38,31 @@ A full-stack Smart Parking Management System with a FastAPI backend (with Postgr
 
 ## Project Structure
 
-smart-parking/ ├── backend/ │ ├── auth.py │ ├── create_admin.py │ ├── database.py │ ├── main.py │ └── requirements.txt └── frontend/ ├── package.json ├── public/ │ ├── index.html │ └── style.css (optional) └── src/ ├── App.css ├── App.js ├── index.js └── components/ ├── AdminLogin.js ├── AdminPanel.js ├── ParkingLot.js └── Slot.js
-
-perl
-
+smart-parking/ 
+.
+├── README.md
+├── backend
+│   ├── auth.py
+│   ├── create_admin.py
+│   ├── database.py
+│   ├── main.py
+│   ├── requirements.txt
+│   └── secret.py
+├── frontend
+│   ├── package.json
+│   ├── public
+│   │   └── index.html
+│   └── src
+│       ├── App.css
+│       ├── App.js
+│       ├── components
+│       │   ├── AdminLogin.js
+│       │   ├── AdminPanel.js
+│       │   ├── GoogleLoginComponent.js
+│       │   ├── ParkingLot.js
+│       │   └── Slot.js
+│       └── index.js
+└── set_env.sh
 
 
 # Backend Setup
