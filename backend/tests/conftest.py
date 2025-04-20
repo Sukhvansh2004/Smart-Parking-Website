@@ -3,38 +3,46 @@ import sys
 import pytest
 import importlib
 
-# Ensure project root is in path to import modules
+# Make sure the backend package is on PYTHONPATH
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
-
-from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker
 
 @pytest.fixture(autouse=True)
 def env_and_db(tmp_path_factory, monkeypatch):
-    # Configure an SQLite database file under a temp directory
+    # 1) Spin up a fresh SQLite file under a temp dir
     temp_dir = tmp_path_factory.mktemp("db")
     db_file = temp_dir / "test.db"
-    db_url = f"sqlite:///{db_file}"
-    monkeypatch.setenv("DATABASE_URL", db_url)
+    sqlite_url = f"sqlite:///{db_file}"
+
+    # 2) Override all secrets/envs for tests
+    monkeypatch.setenv("DATABASE_URL", sqlite_url)
     monkeypatch.setenv("SECRET_KEY", "testsecret")
     monkeypatch.setenv("GOOGLE_CLIENT_ID", "testclientid")
+    monkeypatch.setenv("GOOGLE_CLIENT_SECRET", "testclientsecret")
 
-    # Reload modules that read env vars
+    # 3) Reload every module that reads those at import-time
     import database
     import main
+    import secret
+    import create_admin
+    import auth
+
     importlib.reload(database)
     importlib.reload(main)
+    importlib.reload(secret)
+    importlib.reload(create_admin)
+    importlib.reload(auth)
 
-    # Initialize the database schema
+    # 4) Create all tables in the test SQLite
     from database import Base, engine
     Base.metadata.create_all(bind=engine)
+
     yield
-    # Teardown: drop all tables
+
+    # 5) Tear down
     Base.metadata.drop_all(bind=engine)
 
 @pytest.fixture
 def db():
-    # Provide a fresh DB session for each test
     from database import SessionLocal
     session = SessionLocal()
     try:
@@ -44,7 +52,6 @@ def db():
 
 @pytest.fixture
 def client():
-    # TestClient for FastAPI app
     from fastapi.testclient import TestClient
     from main import app
     return TestClient(app)
