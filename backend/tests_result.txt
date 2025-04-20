@@ -1,0 +1,62 @@
+============================= test session starts ==============================
+platform linux -- Python 3.9.21, pytest-8.3.5, pluggy-1.5.0 -- /home/sukhvansh/anaconda3/envs/smart_parking_env/bin/python
+cachedir: .pytest_cache
+rootdir: /home/sukhvansh/Smart-Parking-Website/backend
+plugins: anyio-4.9.0, cov-6.1.1
+collecting ... collected 14 items
+
+tests/test_auth.py::test_verify_google_token_valid PASSED                [  7%]
+tests/test_auth.py::test_verify_google_token_invalid PASSED              [ 14%]
+tests/test_auth.py::test_password_hash_and_verify PASSED                 [ 21%]
+tests/test_auth.py::test_jwt_encode_decode PASSED                        [ 28%]
+tests/test_create_admin.py::test_create_new_admin PASSED                 [ 35%]
+tests/test_create_admin.py::test_create_existing_admin PASSED            [ 42%]
+tests/test_database.py::test_init_db_runs_without_error PASSED           [ 50%]
+tests/test_database.py::test_parking_slot_crud PASSED                    [ 57%]
+tests/test_database.py::test_admin_model_crud PASSED                     [ 64%]
+tests/test_main.py::test_parking_status_empty PASSED                     [ 71%]
+tests/test_main.py::test_book_and_release_flows PASSED                   [ 78%]
+tests/test_main.py::test_admin_login_and_slot_management PASSED          [ 85%]
+tests/test_main.py::test_user_and_verify_admin_endpoints PASSED          [ 92%]
+tests/test_secret.py::test_secret_loading_from_env PASSED                [100%]
+
+=============================== warnings summary ===============================
+database.py:13: 1 warning
+tests/test_auth.py: 4 warnings
+tests/test_create_admin.py: 2 warnings
+tests/test_database.py: 3 warnings
+tests/test_main.py: 4 warnings
+tests/test_secret.py: 1 warning
+  /home/sukhvansh/Smart-Parking-Website/backend/database.py:13: MovedIn20Warning: The ``declarative_base()`` function is now available as sqlalchemy.orm.declarative_base(). (deprecated since: 2.0) (Background on SQLAlchemy 2.0 at: https://sqlalche.me/e/b8d9)
+    Base = declarative_base()
+
+main.py:27: 1 warning
+tests/test_auth.py: 4 warnings
+tests/test_create_admin.py: 2 warnings
+tests/test_database.py: 3 warnings
+tests/test_main.py: 4 warnings
+tests/test_secret.py: 1 warning
+  /home/sukhvansh/Smart-Parking-Website/backend/main.py:27: DeprecationWarning: 
+          on_event is deprecated, use lifespan event handlers instead.
+  
+          Read more about it in the
+          [FastAPI docs for Lifespan Events](https://fastapi.tiangolo.com/advanced/events/).
+          
+    @app.on_event("startup")
+
+../../anaconda3/envs/smart_parking_env/lib/python3.9/site-packages/fastapi/applications.py:4495: 1 warning
+tests/test_auth.py: 4 warnings
+tests/test_create_admin.py: 2 warnings
+tests/test_database.py: 3 warnings
+tests/test_main.py: 4 warnings
+tests/test_secret.py: 1 warning
+  /home/sukhvansh/anaconda3/envs/smart_parking_env/lib/python3.9/site-packages/fastapi/applications.py:4495: DeprecationWarning: 
+          on_event is deprecated, use lifespan event handlers instead.
+  
+          Read more about it in the
+          [FastAPI docs for Lifespan Events](https://fastapi.tiangolo.com/advanced/events/).
+          
+    return self.router.on_event(event_type)
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+======================= 14 passed, 45 warnings in 2.80s ========================
